@@ -1187,8 +1187,13 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 					qb_status = '" . QUICKBOOKS_STATUS_QUEUED . "' ", $errnum, $errmsg);
 		}
 
+        $batchID = '';
 		if ($extra)
 		{
+            if( !is_object($extra) ){
+                $extra = unserialize($extra);
+                $batchID = $extra['batch_id'];
+            }
 			$extra = serialize($extra);
 		}
 
@@ -1203,7 +1208,8 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 				qbxml,
 				priority,
 				qb_status,
-				enqueue_datetime
+				enqueue_datetime,
+				batch_id
 			) VALUES (
 				'" . $this->_escape($user) . "',
 				'" . $this->_escape($action) . "',
@@ -1212,7 +1218,8 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 				'" . $this->_escape($qbxml) . "',
 				" . (int) $priority . ",
 				'" . QUICKBOOKS_STATUS_QUEUED . "',
-				'" . date('Y-m-d H:i:s') . "'
+				'" . date('Y-m-d H:i:s') . "',
+				'" . $this->_escape($batchID) . "'
 			) ", $errnum, $errmsg);
 	}
 
@@ -3829,4 +3836,3 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 		return false;
 	}
 }
-
