@@ -1170,7 +1170,7 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 	 * @param mixed $ident
 	 * @return boolean
 	 */
-	protected function _queueEnqueue($user, $action, $ident, $replace = true, $priority = 0, $extra = null, $qbxml = null)
+	protected function _queueEnqueue($user, $action, $ident, $replace = false, $priority = 0, $extra = null, $qbxml = null)
 	{
 		$errnum = 0;
 		$errmsg = '';
@@ -1190,11 +1190,10 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
         $batchID = '';
 		if ($extra)
 		{
-            if( !is_object($extra) ){
-                $extra = unserialize($extra);
-                $batchID = $extra['batch_id'];
+            if( !is_string($extra) ){
+                $tmp = json_decode($extra);
+                $batchID = $tmp['batch_id'];
             }
-			$extra = serialize($extra);
 		}
 
 		return $this->_query("
