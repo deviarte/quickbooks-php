@@ -406,7 +406,7 @@ class QuickBooks_WebConnector_Handlers
 				$extra = null;
 				if ($next['extra'])
 				{
-					$extra = unserialize($next['extra']);
+					$extra = json_decode($next['extra']);
 				}
 
 				//print_r($next);
@@ -780,7 +780,7 @@ class QuickBooks_WebConnector_Handlers
 				$extra = '';
 				if ($next['extra'])
 				{
-					$extra = unserialize($next['extra']);
+					$extra = json_decode($next['extra']);
 				}
 
 				$err = '';
@@ -1345,14 +1345,14 @@ class QuickBooks_WebConnector_Handlers
 					{
 						if ($current['extra'])
 						{
-							$extra = unserialize($current['extra']);
+							$extra = json_decode($current['extra']);
 						}
 					}
 					*/
 
 					if ($current['extra'])
 					{
-						$extra = unserialize($current['extra']);
+						$extra = json_decode($current['extra']);
 					}
 
 					$errmsg = null;
@@ -1429,14 +1429,14 @@ class QuickBooks_WebConnector_Handlers
 				{
 					if ($current['extra'])
 					{
-						$extra = unserialize($current['extra']);
+						$extra = json_decode($current['extra']);
 					}
 				}
 				*/
 
 				if ($current['extra'])
 				{
-					$extra = unserialize($current['extra']);
+					$extra = json_decode($current['extra']);
 				}
 
 				// Update the status to success (no error occured)
