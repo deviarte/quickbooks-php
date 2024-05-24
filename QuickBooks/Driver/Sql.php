@@ -1175,18 +1175,6 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 		$errnum = 0;
 		$errmsg = '';
 
-		if ($replace)
-		{
-			$this->_query("
-				DELETE FROM
-					" . $this->_mapTableName(QUICKBOOKS_DRIVER_SQL_QUEUETABLE) . "
-				WHERE
-					qb_username = '" . $this->_escape($user) . "' AND
-					qb_action = '" . $this->_escape($action) . "' AND
-					ident = '" . $this->_escape($ident) . "' AND
-					qb_status = '" . QUICKBOOKS_STATUS_QUEUED . "' ", $errnum, $errmsg);
-		}
-
         $batchID = '';
 		if ($extra)
 		{
