@@ -1176,12 +1176,9 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 		$errmsg = '';
 
         $batchID = '';
-		if ($extra)
-		{
-            if( !is_string($extra) ){
-                $tmp = json_decode($extra);
-                $batchID = $tmp['batch_id'];
-            }
+		if ( !empty($extra) && is_string($extra) ){
+			$tmp = json_decode($extra);
+			$batchID = $tmp['batch_id'] ?? '';
 		}
 
 		return $this->_query("
