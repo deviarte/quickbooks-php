@@ -17,7 +17,9 @@
  */
 
 
-define('BASEPATH', dirname(__FILE__));
+if( !defined(BASEPATH) ) {
+	define('BASEPATH', dirname(__FILE__));
+}
 
 class CI_Controller
 {
