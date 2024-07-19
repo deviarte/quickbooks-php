@@ -17,7 +17,7 @@
  */
 
 
-if( !defined(BASEPATH) ) {
+if( !defined('BASEPATH') ) {
 	define('BASEPATH', dirname(__FILE__));
 }
 
