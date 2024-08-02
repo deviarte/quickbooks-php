@@ -336,7 +336,7 @@ class QuickBooks_Utilities
 	{
 		$remoteaddr_long = ip2long($remoteaddr);
 		
-		list ($net, $mask) = split('/', $CIDR);
+		list ($net, $mask) = preg_split('/', $CIDR);
 		$ip_net = ip2long($net);
 		$ip_mask = ~((1 << (32 - $mask)) - 1);
 		
@@ -374,7 +374,7 @@ class QuickBooks_Utilities
 						break;
 					}
 				}
-				else if (ereg('^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$', $allow))
+				else if (preg_match('^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$', $allow))
 				{
 					// IPv4 address
 					
@@ -406,7 +406,7 @@ class QuickBooks_Utilities
 						return false;
 					}
 				}
-				else if (ereg('^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$', $deny))
+				else if (preg_match('^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$', $deny))
 				{
 					// IPv4 address
 					

@@ -2200,13 +2200,16 @@ public static function InventoryAssemblyLevelsRequest($requestID, $user, $action
 			}
 			else
 			{
-				$base = str_ireplace(array("line", "group"), "", end(explode("_", $DataExt->get("TxnType"))));
+				$txnType = $DataExt->get("TxnType");
+				$array = explode("_", $txnType);
+				$base = str_ireplace(array("line", "group"), "", end($array));
 				$xml .= '<TxnDataExtType>' . $base . '</TxnDataExtType>
 						';
 				if(stripos($DataExt->get("TxnType"), "line") !== false)
 				{
 					$table = strtolower($base) . "_" . strtolower($DataExt->get("TxnType"));
-					if($temp = $Driver->get(QUICKBOOKS_DRIVER_SQL_PREFIX_SQL . $table, array( "TxnLineID" => $DataExt->get("Txn_TxnID") )))
+					$txnID = $DataExt->get("Txn_TxnID");
+					if($temp = $Driver->get(QUICKBOOKS_DRIVER_SQL_PREFIX_SQL . $table, array( "TxnLineID" => $txnID )))
 					{
 						$xml .= '<TxnID>' . $temp->get( $base . '_TxnID' ) . '</TxnID>
 								 <TxnLineID>' . $DataExt->get("Txn_TxnID") . '</TxnLineID>
@@ -2283,7 +2286,8 @@ public static function InventoryAssemblyLevelsRequest($requestID, $user, $action
 			}
 			else
 			{
-				$base = str_ireplace(array("line", "group"), "", end(explode("_", $DataExt->get("TxnType"))));
+				$array = explode("_", $DataExt->get("TxnType"));
+				$base = str_ireplace(array("line", "group"), "", end($array));
 				$xml .= '<TxnDataExtType>' . $base . '</TxnDataExtType>
 						';
 				if(stripos($DataExt->get("TxnType"), "line") !== false)
@@ -11831,4 +11835,3 @@ $idents = array();
 $tmp = QuickBooks_Driver_Singleton::getInstance('mysql://root:root@localhost/quickbooks_sql', array(), array(), QUICKBOOKS_LOG_DEVELOP);
 print(QuickBooks_Callbacks_SQL_Callbacks::InventoryLevelsResponse($requestID, $user, $action, $ID, $extra, $err, $last_action_time, $last_actionident_time, $xml, $idents, $config = array() ));
 */
-

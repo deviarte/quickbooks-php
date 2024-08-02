@@ -284,28 +284,7 @@ class QuickBooks_Driver_Sql_Mysql extends QuickBooks_Driver_Sql
 	 */
 	protected function _connect($host, $port, $user, $pass, $db, $new_link, $client_flags)
 	{
-		if ($port)
-		{
-			$this->_conn = mysql_connect($host . ':' . $port, $user, $pass, $new_link, $client_flags) or die('host: ' . $host . ', user: ' . $user . ', pass: XXXX, mysql_error(): ' . mysql_error());
-		}
-		else
-		{
-			$this->_conn = mysql_connect($host, $user, $pass, $new_link, $client_flags) or die('host: ' . $host . ', user: ' . $user . ', pass: XXXX, mysql_error(): ' . mysql_error());
-		}
-			
-		// Select the correct database
-		$tmp = mysql_select_db($db, $this->_conn) or die(mysql_error());
-		
-		// Support UTF-8 chars
-		mysql_query("SET NAMES 'utf8'", $this->_conn);
-		
-		/*
-		static $connections = array();
-		$connections[] = $user . ':' . $pass . '@' . $host . ':' . $port . '/' . $db;
-		mysql_query("INSERT INTO quickbooks_log ( msg, log_datetime ) VALUES ( 'MySQL connection #" . count($connections) . ", " . print_r($connections, true) . "', NOW() )", $this->_conn) or die(mysql_error());
-		*/
-		
-		return $tmp;
+		return false;
 	}
 	
 	/**
@@ -316,7 +295,7 @@ class QuickBooks_Driver_Sql_Mysql extends QuickBooks_Driver_Sql
 	 */
 	protected function _fetch($res)
 	{
-		return mysql_fetch_assoc($res);
+		return false;
 	}
 	
 	/**
@@ -327,63 +306,7 @@ class QuickBooks_Driver_Sql_Mysql extends QuickBooks_Driver_Sql
 	 */
 	protected function _query($sql, &$errnum, &$errmsg, $offset = 0, $limit = null)
 	{
-		if ($limit)
-		{
-			if ($offset)
-			{
-				$sql .= " LIMIT " . (int) $offset . ", " . (int) $limit;
-			}
-			else
-			{
-				$sql .= " LIMIT " . (int) $limit;
-			}
-		}
-		else if ($offset)
-		{
-			// @todo Should this be implemented...?
-		}
-		
-		//print($sql . "\n\n");
-		$res = mysql_query($sql, $this->_conn);
-		//mysql_query("INSERT INTO quickbooks_log ( msg, log_datetime ) VALUES ( '" . mysql_real_escape_string($sql) . "', NOW() ) ");
-		
-		/*
-		CREATE TABLE quickbooks_debug (
-		  quickbooks_debug_id int(10) unsigned NOT NULL AUTO_INCREMENT,
-		  msg text NOT NULL,
-		  debug_datetime datetime NOT NULL,
-		  PRIMARY KEY (quickbooks_debug_id)
-		) ENGINE=MyISAM
-		*/
-		
-		// Debugging... 
-		/*
-		mysql_query("
-			INSERT INTO
-				quickbooks_debug
-			(
-				msg, 
-				debug_datetime 
-			)
-			VALUES
-			(
-				'" . $this->_escape($sql) . "', 
-				NOW() 
-			)");
-		*/
-		
-		if (!$res)
-		{
-			$errnum = mysql_errno($this->_conn);
-			$errmsg = mysql_error($this->_conn);
-			
-			//print($sql);
-			
-			trigger_error('Error Num.: ' . $errnum . "\n" . 'Error Msg.:' . $errmsg . "\n" . 'SQL: ' . $sql, E_USER_ERROR);
-			return false;
-		}
-		
-		return $res;
+		return false;
 	}
 	
 	/**
@@ -428,7 +351,7 @@ class QuickBooks_Driver_Sql_Mysql extends QuickBooks_Driver_Sql
 	 */
 	public function affected()
 	{
-		return mysql_affected_rows($this->_conn);
+		return false;
 	}
 	
 	/**
@@ -438,7 +361,7 @@ class QuickBooks_Driver_Sql_Mysql extends QuickBooks_Driver_Sql
 	 */
 	public function last()
 	{
-		return mysql_insert_id($this->_conn);
+		return false;
 	}
 	
 	/**
@@ -482,12 +405,7 @@ class QuickBooks_Driver_Sql_Mysql extends QuickBooks_Driver_Sql
 	 */
 	public function rewind($res)
 	{
-		if (mysql_num_rows($res) > 0)
-		{
-			return mysql_data_seek($res, 0);
-		}
-		
-		return true;
+		return false;
 	}
 	
 	/**
@@ -498,7 +416,7 @@ class QuickBooks_Driver_Sql_Mysql extends QuickBooks_Driver_Sql
 	 */
 	protected function _escape($str)
 	{
-		return mysql_real_escape_string($str, $this->_conn);
+		return false;
 	}
 	
 	/**
@@ -509,7 +427,7 @@ class QuickBooks_Driver_Sql_Mysql extends QuickBooks_Driver_Sql
 	 */
 	protected function _count($res)
 	{
-		return mysql_num_rows($res);
+		return false;
 	}
 	
 	/**
