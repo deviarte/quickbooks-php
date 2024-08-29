@@ -91,6 +91,9 @@ class QuickBooks_Utilities
 			{
 				// It's an XML tag
 				$contents = QuickBooks_Utilities::_extractTagContents(trim($key, '<> '), $message);
+				if( empty($contents) ){
+					$contents = '';
+				}
 				
 				$masked = str_repeat('x', min(strlen($contents), 12)) . substr($contents, 12);
 				
