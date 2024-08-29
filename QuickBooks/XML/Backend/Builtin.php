@@ -362,7 +362,7 @@ class QuickBooks_XML_Backend_Builtin implements QuickBooks_XML_Backend
 			}
 
 			$length = $node[3];
-			$payload = $node[4];
+			$payload = $node[4] ?? '';
 
 			$tmp = '';
 			$attributes = array();
@@ -376,7 +376,7 @@ class QuickBooks_XML_Backend_Builtin implements QuickBooks_XML_Backend
 				$Node->addAttribute($key, $value);
 			}
 			
-			if (false !== strpos($payload, '<'))
+			if (str_contains($payload, '<'))
 			{
 				// The tag contains child tags 
 				
