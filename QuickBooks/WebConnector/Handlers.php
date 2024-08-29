@@ -544,6 +544,9 @@ class QuickBooks_WebConnector_Handlers
 		$customauth_wait_before_next_update = null;
 		$customauth_min_run_every_n_seconds = null;
 
+		if( empty($override_dsn) ){
+			$override_dsn = '';
+		}
 		if (is_array($override_dsn) or strlen($override_dsn)) 	// Custom autj
 		{
 			//if ($auth->authenticate($obj->strUserName, $obj->strPassword, $customauth_company_file, $customauth_wait_before_next_update, $customauth_min_run_every_n_seconds) and
@@ -643,7 +646,9 @@ class QuickBooks_WebConnector_Handlers
 			{
 				//$this->_driver->log('Login: ' . $obj->strUserName, $ticket, QUICKBOOKS_LOG_DEBUG);
 				$this->_log('Login: ' . $obj->strUserName, $ticket, QUICKBOOKS_LOG_DEBUG);
-
+				if( $company_file === null ){
+					$company_file = '';
+				}
 				if (!strlen($company_file) and $this->_config['qb_company_file'])
 				{
 					$status = $this->_config['qb_company_file'];
@@ -877,7 +882,7 @@ class QuickBooks_WebConnector_Handlers
 				{
 					//$this->_driver->log('Outgoing XML request: ' . $xml, $obj->ticket, QUICKBOOKS_LOG_DEBUG);
 					$this->_log('Outgoing XML request: ' . $xml, $obj->ticket, QUICKBOOKS_LOG_DEBUG);
-
+					$xml = $xml ?? '';
 					if (strlen($xml) and  // Returned XML AND
 						!$this->_extractRequestID($xml)) // Does not have a requestID in the request
 					{
@@ -1287,6 +1292,9 @@ class QuickBooks_WebConnector_Handlers
 			$this->_log('Incoming XML response: ' . $obj->response, $obj->ticket, QUICKBOOKS_LOG_DEBUG);
 
 			// Check if we got a error message...
+			if( empty($obj->message) ){
+				$obj->message = '';
+			}
 			if (strlen($obj->message) or
 				$this->_extractStatusCode($obj->response)) // or an error code
 			{
