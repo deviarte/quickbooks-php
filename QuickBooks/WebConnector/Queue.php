@@ -53,7 +53,7 @@ QuickBooks_Loader::load('/QuickBooks/WebConnector/Queue/Singleton.php');
 /**
  * QuickBooks queueing class - Queue up actions to be performed in QuickBooks
  */
-class QuickBooks_WebConnector_Queue
+#[AllowDynamicProperties] class QuickBooks_WebConnector_Queue
 {
 	/**
 	 * The default username to use when queueing items

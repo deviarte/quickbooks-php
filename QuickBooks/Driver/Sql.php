@@ -1170,26 +1170,15 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 	 * @param mixed $ident
 	 * @return boolean
 	 */
-	protected function _queueEnqueue($user, $action, $ident, $replace = true, $priority = 0, $extra = null, $qbxml = null)
+	protected function _queueEnqueue($user, $action, $ident, $replace = false, $priority = 0, $extra = null, $qbxml = null)
 	{
 		$errnum = 0;
 		$errmsg = '';
 
-		if ($replace)
-		{
-			$this->_query("
-				DELETE FROM
-					" . $this->_mapTableName(QUICKBOOKS_DRIVER_SQL_QUEUETABLE) . "
-				WHERE
-					qb_username = '" . $this->_escape($user) . "' AND
-					qb_action = '" . $this->_escape($action) . "' AND
-					ident = '" . $this->_escape($ident) . "' AND
-					qb_status = '" . QUICKBOOKS_STATUS_QUEUED . "' ", $errnum, $errmsg);
-		}
-
-		if ($extra)
-		{
-			$extra = serialize($extra);
+        $batchID = '';
+		if ( !empty($extra) && is_string($extra) ){
+			$tmp = json_decode($extra);
+			$batchID = $tmp->batch_id ?? '';
 		}
 
 		return $this->_query("
@@ -1203,7 +1192,8 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 				qbxml,
 				priority,
 				qb_status,
-				enqueue_datetime
+				enqueue_datetime,
+				batch_id
 			) VALUES (
 				'" . $this->_escape($user) . "',
 				'" . $this->_escape($action) . "',
@@ -1212,7 +1202,8 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 				'" . $this->_escape($qbxml) . "',
 				" . (int) $priority . ",
 				'" . QUICKBOOKS_STATUS_QUEUED . "',
-				'" . date('Y-m-d H:i:s') . "'
+				'" . date('Y-m-d H:i:s') . "',
+				'" . $this->_escape($batchID) . "'
 			) ", $errnum, $errmsg);
 	}
 
@@ -3829,4 +3820,3 @@ abstract class QuickBooks_Driver_Sql extends QuickBooks_Driver
 		return false;
 	}
 }
-

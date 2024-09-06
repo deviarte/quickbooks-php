@@ -321,19 +321,7 @@ class QuickBooks_Driver_Sql_Mssql extends QuickBooks_Driver_Sql
 	 */
 	protected function _connect($host, $port, $user, $pass, $db, $new_link, $client_flags)
 	{
-		mssql_min_message_severity(QUICKBOOKS_DRIVER_SQL_MSSQL_MESSAGE_LEVEL);
-		mssql_min_error_severity(QUICKBOOKS_DRIVER_SQL_MSSQL_ERROR_LEVEL);
-		
-		if ($port)
-		{
-			$this->_conn = mssql_connect($host, $user, $pass, $new_link) or die('host: ' . $host . ', user: ' . $user . ', pass: ' . $pass . ' mysql_error(): ' . mssql_get_last_message());
-		}
-		else
-		{
-			$this->_conn = mssql_connect($host . ':' . $port, $user, $pass, $new_link) or die('host: ' . $host . ', user: ' . $user . ', pass: ' . $pass . ' mysql_error(): ' . mssql_get_last_message());
-		}
-		
-		return mssql_select_db($db, $this->_conn);
+		return false;
 	}
 	
 	/**
@@ -344,15 +332,7 @@ class QuickBooks_Driver_Sql_Mssql extends QuickBooks_Driver_Sql
 	 */
 	protected function _fetch($res)
 	{
-		$arr = mssql_fetch_assoc($res);
-		
-		// What's going on with this...? 
-		foreach ($arr as $key => $value)
-		{
-			$arr[$key] = trim($value);
-		}
-		
-		return $arr;
+		return false;
 	}
 	
 	/**
@@ -363,48 +343,7 @@ class QuickBooks_Driver_Sql_Mssql extends QuickBooks_Driver_Sql
 	 */
 	protected function _query($sql, &$errnum, &$errmsg, $offset = 0, $limit = null)
 	{
-		if ($limit)
-		{
-			$sql = str_replace(array( "SELECT ", "SELECT\n", "SELECT\r" ), 'SELECT TOP ' . (int) $limit . ' ' . "\n", $sql);
-			
-			/*
-select * from (
- select top 10 emp_id,lname,fname from (
-    select top 30 emp_id,lname,fname
-    from employee
-   order by lname asc
- ) as newtbl order by lname desc
-) as newtbl2 order by lname asc			
-			*/
-			
-			if ($offset)
-			{
-				
-			}
-			else
-			{
-				
-			}
-		}
-		else if ($offset)
-		{
-			// @todo Does this need to be implemented...?
-		}
-		
-		$res = mssql_query($sql, $this->_conn);
-		
-		if (!$res)
-		{
-			$errnum = 1;
-			$errmsg = mssql_get_last_message();
-			
-			//print($sql);
-			
-			trigger_error('Error: ' . $errmsg . "\n" . 'SQL: ' . $sql, E_USER_ERROR);
-			return false;
-		}
-		
-		return $res;
+		return false;
 	}
 	
 	/**
@@ -427,7 +366,7 @@ select * from (
 	 */
 	public function affected()
 	{
-		return mssql_rows_affected($this->_conn);
+		return false;
 	}
 	
 	/**
@@ -456,12 +395,7 @@ select * from (
 	 */
 	public function rewind($res)
 	{
-		if (mssql_num_rows($res) > 0)
-		{
-			return mssql_data_seek($res, 0);
-		}
-		
-		return true;
+		return false;
 	}
 	
 	/**
@@ -519,7 +453,7 @@ select * from (
 	 */
 	protected function _count($res)
 	{
-		return mssql_num_rows($res);
+		return false;
 	}
 	
 	/**
